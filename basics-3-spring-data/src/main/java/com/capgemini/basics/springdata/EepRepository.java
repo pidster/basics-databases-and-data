@@ -5,7 +5,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
+ * There's no implementation!
  *
+ * Creating database handling code is so predictable and repetitive, that
+ * it's possible for Spring Data to create all of the code for us.
  */
 public interface EepRepository extends CrudRepository<Eep, Long> {
 
