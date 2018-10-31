@@ -61,6 +61,7 @@ public class DataRepositoryImpl implements DataRepository {
     @Override
     public ImportantData findByName(String name) throws DataException {
 
+        // This is still terrible! Never do this!
         String sql = "SELECT id, name, created, updated FROM important_data WHERE name = '" + name + "'";
 
         ResultSet resultSet = null;
@@ -136,6 +137,10 @@ public class DataRepositoryImpl implements DataRepository {
 
         // Phew, finally a try-with-resources (or rather, _no_ finally...)
         try (Connection connection = DriverManager.getConnection(jdbcUrl, properties);
+
+             // It's rare that a raw Statement would be appropriate, in the majority of cases a
+             // PreparedStatement is preferable, because it permits parameterised queries, and
+             // caching of frequently used objects which improves performance.
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
 
