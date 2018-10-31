@@ -15,24 +15,6 @@ public class FooRepositoryTests {
 
     private static FooRepository fooRepository;
 
-    @BeforeAll
-    public static void setup() throws ClassNotFoundException {
-
-        // Setup for the database.
-        // We're using an embedded database just to keep the example as simple as possible.
-        Class.forName("org.hsqldb.jdbc.JDBCDriver");
-
-        String jdbc_url = "jdbc:hsqldb:mem:testdb";
-        String username = "SA";
-        String password = "";
-
-        Properties properties = new Properties();
-        properties.setProperty("username", username);
-        properties.setProperty("password", password);
-
-        fooRepository = new FooRepositoryImpl(jdbc_url, properties);
-    }
-
     @Test
     public void test1() throws FooException {
 
@@ -72,4 +54,22 @@ public class FooRepositoryTests {
         );
     }
 
+
+    @BeforeAll
+    public static void setup() throws ClassNotFoundException {
+
+        // Setup for the database.
+        // We're using an embedded database just to keep the example as simple as possible.
+        Class.forName("org.hsqldb.jdbc.JDBCDriver");
+
+        String jdbc_url = "jdbc:hsqldb:mem:testdb";
+        String username = "SA";
+        String password = "";
+
+        Properties properties = new Properties();
+        properties.setProperty("username", username);
+        properties.setProperty("password", password);
+
+        fooRepository = new FooRepositoryImpl(jdbc_url, properties);
+    }
 }
