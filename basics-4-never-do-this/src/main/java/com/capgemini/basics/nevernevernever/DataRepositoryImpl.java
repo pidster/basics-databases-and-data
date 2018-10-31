@@ -39,21 +39,18 @@ public class DataRepositoryImpl implements DataRepository {
         try (Connection connection = DriverManager.getConnection(jdbcUrl, properties);
              Statement statement = connection.createStatement()) {
 
-            // This is terrible! Never do this!
-            // Creating SQL statements by concatenating strings is bad practice and
-            // exposes the application to potential SQL Injection vulnerabilities
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
             String created = sdf.format(data.getCreated());
             String updated = sdf.format(data.getUpdated());
 
+            // This is terrible! Never do this!
+            // Creating SQL statements by concatenating strings is bad practice and
+            // exposes the application to potential SQL Injection vulnerabilities
             String sql = "INSERT INTO important_data (name, created, updated) VALUES ('" + data.getName() + "', '" + created + "', '" + updated + "')";
 
-            boolean success = statement.execute(sql);
-
-            if (success) {
-                throw new DataException("Only one update was expected!");
+            int rows = statement.executeUpdate(sql);
+            if (rows != 1) {
+                throw new DataException("Expected one result, but got " + rows + "!");
             }
         }
         catch (SQLException e) {

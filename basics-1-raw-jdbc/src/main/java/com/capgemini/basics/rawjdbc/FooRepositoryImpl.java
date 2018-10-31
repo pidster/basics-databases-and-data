@@ -49,10 +49,9 @@ public class FooRepositoryImpl implements FooRepository {
             preparedStatement.setDate(2, new java.sql.Date(foo.getCreated().getTime()));
             preparedStatement.setDate(3, new java.sql.Date(foo.getUpdated().getTime()));
 
-            int updated = preparedStatement.executeUpdate();
-
-            if (updated != 1) {
-                throw new FooException("One update was expected!");
+            int rows = preparedStatement.executeUpdate();
+            if (rows != 1) {
+                throw new FooException("Expected one result, but got " + rows + "!");
             }
         }
         catch (SQLException e) {
