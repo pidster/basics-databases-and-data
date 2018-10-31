@@ -12,6 +12,7 @@
         <module>basics-1-raw-jdbc</module>
         <module>basics-2-spring-jdbc</module>
         <module>basics-3-spring-data</module>
+        <module>basics-4-never-do-this</module>
     </modules>
 
     <properties>

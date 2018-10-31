@@ -9,9 +9,9 @@ import java.util.List;
 
 public class BarRepositoryImpl implements BarRepository {
 
-    private static final String INSERT_ONE = "INSERT INTO foo (name, created, updated) VALUES (?, ?, ?)";
-    private static final String FIND_BY_NAME = "SELECT id, name, created, updated FROM foo WHERE name = ?";
-    private static final String FIND_ALL = "SELECT id, name, created, updated FROM foo ORDER BY updated";
+    private static final String INSERT_ONE = "INSERT INTO bar (name, created, updated) VALUES (?, ?, ?)";
+    private static final String FIND_BY_NAME = "SELECT id, name, created, updated FROM bar WHERE name = ?";
+    private static final String FIND_ALL = "SELECT id, name, created, updated FROM bar ORDER BY updated";
 
     private final JdbcTemplate jdbcTemplate;
 
