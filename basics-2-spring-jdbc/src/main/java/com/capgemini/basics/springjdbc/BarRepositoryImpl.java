@@ -21,6 +21,9 @@ public class BarRepositoryImpl implements BarRepository {
 
     @Override
     public void create(Bar bar) {
+
+        // All of the boiler plate has disappeared!
+        // Now all the code does is map parameters to query fields
         jdbcTemplate.update(INSERT_ONE, preparedStatement -> {
             preparedStatement.setString(1, bar.getName());
             preparedStatement.setDate(2, new java.sql.Date(bar.getCreated().getTime()));
@@ -36,6 +39,7 @@ public class BarRepositoryImpl implements BarRepository {
 
     @Override
     public List<Bar> findAll() {
+        // All of the boiler plate has disappeared!
         // use a method reference for convenience
         return jdbcTemplate.query(FIND_ALL, this::mapRowIndex);
     }
