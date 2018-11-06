@@ -38,12 +38,15 @@ public class FooRepositoryImpl implements FooRepository {
     @Override
     public void create(Foo foo) throws FooException {
 
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
         // In earlier days we didn't have try-with-resources, so the
         // code was extremely verbose; writing finally { close } statements
-        // was *incredibly* repetitive...
-
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, properties);
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ONE)) {
+        // was *incredibly* tedious...
+        try {
+            connection = DriverManager.getConnection(jdbcUrl, properties);
+            preparedStatement = connection.prepareStatement(INSERT_ONE);
 
             preparedStatement.setString(1, foo.getName());
             preparedStatement.setDate(2, new java.sql.Date(foo.getCreated().getTime()));
@@ -56,6 +59,25 @@ public class FooRepositoryImpl implements FooRepository {
         }
         catch (SQLException e) {
             throw new FooException(e);
+        }
+        finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                }
+                catch (SQLException e) {
+                    LOGGER.error("An error occurred while closing a prepared statement!", e);
+                }
+            }
+
+            if (connection != null) {
+                try {
+                    connection.close();
+                }
+                catch (SQLException e) {
+                    LOGGER.error("An error occurred while closing a connection!", e);
+                }
+            }
         }
     }
 
@@ -140,7 +162,7 @@ public class FooRepositoryImpl implements FooRepository {
     @Override
     public List<Foo> findAll() throws FooException {
 
-        // Phew, finally a try-with-resources (or rather, _no_ finally...)
+        // Phew, finally a try-with-resources (or rather, there's no 'finally'...)
         try (Connection connection = DriverManager.getConnection(jdbcUrl, properties);
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
